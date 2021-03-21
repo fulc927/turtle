@@ -2,6 +2,8 @@
 
 # Turtle - A wrapper on the RabbitMQ Erlang Client
 
+turtle_config.erl has been modified by myself to make it efficiently working with cctv.app by fetching configuration in the main parameter file.
+
 The `turtle` application is built to be a wrapper around the RabbitMQ
 standard Erlang driver. The purpose is to enable faster implementation
 and use of RabbitMQ by factoring out common tasks into a specific
