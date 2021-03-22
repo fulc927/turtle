@@ -25,6 +25,7 @@
 %% For the definition of the `Conf' parameter, see {@link child_spec/1}
 %% @end
 start_link(#{ name := Name } = Conf) ->
+    io:format("~p turtle_service start_link CONF ~n", [Conf]),
     validate_config(Conf),
     supervisor:start_link({via, gproc, {n,l,{turtle,service,Name}}}, ?MODULE, [Conf]).
 
@@ -55,6 +56,7 @@ start_link(#{ name := Name } = Conf) ->
 %%   <dd>true/false value - designates if we should force passive queue/exchange creation.</dd>
 %% </dl>
 child_spec(#{ name := Name } = Conf) ->
+    io:format("~p turtle_service child_spec CONF ~n", [Conf]),
     {Name, {?MODULE, start_link, [Conf]},
        permanent, infinity, supervisor, [?MODULE]}.
 
