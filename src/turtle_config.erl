@@ -18,9 +18,7 @@ read_params() ->
 -spec conn_params(map()) -> term(). % @todo fix this typespec
 conn_params(Ps) -> 
      Ssl_options = application:get_env(cctv, ssl_options),
-        io:format("~p ~n",[Ssl_options]),
      {_, Ssl_opts} = Ssl_options,
-        io:format("~p ~n",[Ssl_opts]),
     #amqp_params_network {
         username = username(Ps),
         password = password(Ps),
