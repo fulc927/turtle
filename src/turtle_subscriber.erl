@@ -178,7 +178,7 @@ handle_deliver_single({#'basic.deliver' {delivery_tag = DTag, routing_key = Key}
 		#amqp_msg {
 	    props = #'P_basic' {
 	        correlation_id = CorrID,
-	        reply_to = ReplyTo }} = Content},
+	        reply_to = ReplyTo, headers = Hdrs }} = Content},
 	#state { invoke = Fun, invoke_state = IState,channel = Channel } = State) ->
     S = turtle_time:monotonic_time(),
     Tag = {DTag, ReplyTo, CorrID},
@@ -259,10 +259,10 @@ handle_message(Tag, Fun, Key,
 	#amqp_msg {
 	    payload = Payload,
 	    props = #'P_basic' {
-	        content_type = Type }}, IState) ->
+	        content_type = Type, headers = Hdr }}, IState) ->
     Res = case Tag of
-        {undefined, _, _} -> Fun(Key, Type, Payload, IState);
-        Tag -> Fun(Key, Type, Payload, Tag, IState)
+        {undefined, _, _} -> Fun(Key, Type, Payload, Hdr, IState);
+        Tag -> Fun(Key, Type, Payload, Tag, Hdr, IState)
     end,
     case Res of
         %% Bulk messages
