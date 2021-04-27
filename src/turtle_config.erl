@@ -12,7 +12,7 @@
 
 -spec read_params() -> [map()].
 read_params() ->
-    {ok, Conf} = application:get_env(cctv, connection_config),
+    {ok, Conf} = application:get_env(pipeline, connection_config),
     Conf.
 
 -spec conn_params(map()) -> term(). % @todo fix this typespec
