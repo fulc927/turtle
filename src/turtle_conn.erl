@@ -170,6 +170,7 @@ connect(#state { network_params = NP, cg = CG } = State) ->
     },
     case turtle:open_connection(Network) of
        {ok, Conn} ->
+		    io:format("SEB Conn est ~p ~n",[Conn]),
             MRef = erlang:monitor(process, Conn),
             {ok, State#state { monitor = MRef,
                                connection = Conn, cg = CG2 }};
