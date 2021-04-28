@@ -64,6 +64,7 @@ handle_call({open_connection, Network}, {Pid, _}, #state { bimap = BiMap } = Sta
 handle_call({open_channel, Name}, {Pid, _}, #state { bimap = BiMap } = State) ->
     try turtle_conn:conn(Name) of
         Conn when is_pid(Conn) ->
+			io:format("SEB turtle_janitor Conn ~p ~n",[Conn]),
             case amqp_connection:open_channel(Conn) of
                 {ok, Channel} ->
 			io:format("SEB turtle_janitor Channel ~p ~n",[Channel]),
