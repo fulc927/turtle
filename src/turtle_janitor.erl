@@ -66,6 +66,7 @@ handle_call({open_channel, Name}, {Pid, _}, #state { bimap = BiMap } = State) ->
         Conn when is_pid(Conn) ->
             case amqp_connection:open_channel(Conn) of
                 {ok, Channel} ->
+			io:format("SEB turtle_janitor Channel ~p ~n",[Channel]),
                     %% Hand out a channel to Pid
                     MRef = erlang:monitor(process, Pid),
                     {reply,
