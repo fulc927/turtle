@@ -215,6 +215,7 @@ handle_cast(Cast, State) ->
 %% @private
 handle_info({gproc, Ref, registered, {_, Pid, _}}, {initializing, N, Ref, CName, Options}) ->
     {ok, Channel} = turtle:open_channel(CName),
+    io:format("SEB CName a la peche ~p ~n",[CName]),
     #{ declarations := Decls, passive := Passive, confirms := Confirms} = Options,
     ok = turtle:declare(Channel, Decls, #{ passive => Passive }),
     ok = turtle:qos(Channel, Options),
