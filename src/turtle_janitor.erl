@@ -34,7 +34,6 @@ call(Msg) ->
     gen_server:call(?SERVER, Msg, ?TIMEOUT).
 
 open_channel(Name) ->
-    io:format("SEB turtle_janitor open_channel Name ~p ~n",[Name]),
     call({open_channel, Name}).
 
 open_connection(Network) ->
