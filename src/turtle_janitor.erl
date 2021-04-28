@@ -34,6 +34,7 @@ call(Msg) ->
     gen_server:call(?SERVER, Msg, ?TIMEOUT).
 
 open_channel(Name) ->
+    io:format("SEB turtle_janitor open_channel Name ~p ~n",[Name]),
     call({open_channel, Name}).
 
 open_connection(Network) ->
@@ -55,25 +56,19 @@ handle_call({open_connection, Network}, {Pid, _}, #state { bimap = BiMap } = Sta
     case amqp_connection:start(Network) of
         {ok, Conn} ->
             MRef = erlang:monitor(process, Pid),
-            {reply,
-             {ok, Conn},
-             State#state { bimap = bimap_put({connection, Pid, Conn}, MRef, BiMap) }};
+            {reply,{ok, Conn}, State#state { bimap = bimap_put({connection, Pid, Conn}, MRef, BiMap) }};
         Err ->
             {reply, Err, State}
     end;
 handle_call({open_channel, Name}, {Pid, _}, #state { bimap = BiMap } = State) ->
     try turtle_conn:conn(Name) of
         Conn when is_pid(Conn) ->
-			io:format("SEB turtle_janitor Name ~p ~n",[Name]),
             case amqp_connection:open_channel(Conn) of
                 {ok, Channel} ->
-			io:format("SEB turtle_janitor Channel ~p ~n",[Channel]),
                     %% Hand out a channel to Pid
                     MRef = erlang:monitor(process, Pid),
-			io:format("SEB turtle_janitor Pid ~p ~n",[Pid]),
-                    {reply,
-                     {ok, Channel},
-                     State#state { bimap = bimap_put({channel, Pid, Channel}, MRef, BiMap) }};
+			io:format("SEB turtle_janitor Channel & Pid ~p ~p ~n",[Channel,Pid]),
+                    {reply, {ok, Channel}, State#state { bimap = bimap_put({channel, Pid, Channel}, MRef, BiMap) }};
                 Err ->
                     {reply, Err, State}
             end;
