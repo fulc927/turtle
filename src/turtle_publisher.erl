@@ -165,6 +165,7 @@ init([Name, ConnName, Options]) ->
     %% a connection under the given name without blocking the process. We replace
     %% the state with a #state{} record once that happens (see handle_info/2)
     Ref = gproc:nb_wait({n,l,{turtle,connection,ConnName}}),
+    io:format("SEB turtle_publisher ConnName dans init ~p ~n",[ConnName]),
     ok = exometer:ensure([ConnName, Name, casts], spiral, []),
     {ok, {initializing, Name, Ref, ConnName, Options}}.
 
@@ -215,7 +216,7 @@ handle_cast(Cast, State) ->
 %% @private
 handle_info({gproc, Ref, registered, {_, Pid, _}}, {initializing, N, Ref, CName, Options}) ->
     {ok, Channel} = turtle:open_channel(CName),
-    io:format("SEB CName a la peche ~p ~n",[CName]),
+    io:format("SEB turtle_publisher CName important ~p ~n",[CName]),
     #{ declarations := Decls, passive := Passive, confirms := Confirms} = Options,
     ok = turtle:declare(Channel, Decls, #{ passive => Passive }),
     ok = turtle:qos(Channel, Options),
@@ -235,6 +236,7 @@ handle_info({gproc, Ref, registered, {_, Pid, _}}, {initializing, N, Ref, CName,
         name = N}};
 handle_info({gproc, Ref, registered, {_, Pid, _}}, {initializing_takeover, N, Ref, CName, Options}) ->
     {ok, Channel} = turtle:open_channel(CName),
+    io:format("SEB turtle_publisher takeover Channel CName ~p ~n",[Channel,CName]),
     #{ declarations := Decls, passive := Passive, confirms := Confirms} = Options,
     ok = turtle:declare(Channel, Decls, #{ passive => Passive }),
     ok = turtle:qos(Channel, Options),
