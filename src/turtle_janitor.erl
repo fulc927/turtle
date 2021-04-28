@@ -69,6 +69,7 @@ handle_call({open_channel, Name}, {Pid, _}, #state { bimap = BiMap } = State) ->
 			io:format("SEB turtle_janitor Channel ~p ~n",[Channel]),
                     %% Hand out a channel to Pid
                     MRef = erlang:monitor(process, Pid),
+			io:format("SEB turtle_janitor Pid ~p ~n",[Pid]),
                     {reply,
                      {ok, Channel},
                      State#state { bimap = bimap_put({channel, Pid, Channel}, MRef, BiMap) }};
