@@ -12,12 +12,12 @@
 
 -spec read_params() -> [map()].
 read_params() ->
-    {ok, Conf} = application:get_env(email_single, connection_config),
+    {ok, Conf} = application:get_env(event_single, connection_config),
     Conf.
 
 -spec conn_params(map()) -> term(). % @todo fix this typespec
 conn_params(Ps) -> 
-     Ssl_options = application:get_env(email_single, ssl_options),
+     Ssl_options = application:get_env(event_single, ssl_options),
      {_, Ssl_opts} = Ssl_options,
     #amqp_params_network {
         username = username(Ps),
@@ -45,7 +45,7 @@ virtual_host(#{ virtual_host := VH }) -> list_to_binary(VH).
 
 -spec validate_conn_name(term()) -> ok | unknown_conn_name.
 validate_conn_name(Name) ->
-    ConfigList = application:get_env(email_single, connection_config, []),
+    ConfigList = application:get_env(event_single, connection_config, []),
     validate_conn_name(Name, ConfigList).
 
 validate_conn_name(_, []) ->
