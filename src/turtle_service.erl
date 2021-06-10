@@ -25,7 +25,6 @@
 %% For the definition of the `Conf' parameter, see {@link child_spec/1}
 %% @end
 start_link(#{ name := Name } = Conf) ->
-    io:format(" turtle_service start_link CONF ~p ~n", [Conf]),
     validate_config(Conf),
     supervisor:start_link({via, gproc, {n,l,{turtle,service,Name}}}, ?MODULE, [Conf]).
 
